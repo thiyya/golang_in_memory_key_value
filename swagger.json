@@ -1,0 +1,148 @@
+{
+  "consumes": [
+    "application/json",
+    "application/xml"
+  ],
+  "produces": [
+    "application/json",
+    "application/xml"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "In memory key value tutan bir rest apidir.",
+    "title": "golang_in_memory_key_value uygulaması API dökümanı.",
+    "contact": {},
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    },
+    "version": "0.0.1"
+  },
+  "host": "localhost",
+  "basePath": "/v1",
+  "paths": {
+    "/keys": {
+      "post": {
+        "summary": "Yeni bir key oluşturur ya da günceller.",
+        "operationId": "create-key",
+        "responses": {
+          "201": {
+            "$ref": "#/responses/KeyValueItemResponse"
+          },
+          "400": {
+            "$ref": "#/responses/ErrorResponse400"
+          },
+          "default": {
+            "$ref": "#/responses/GenericErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "description": "Bütün key-value itemlarini siler",
+        "operationId": "flush-keys",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/EmptyResponse"
+          },
+          "400": {
+            "$ref": "#/responses/ErrorResponse400"
+          },
+          "default": {
+            "$ref": "#/responses/GenericErrorResponse"
+          }
+        }
+      }
+    },
+    "/keys/{id}": {
+      "get": {
+        "summary": "Verilen key'e ait değeri döndürür.",
+        "operationId": "get-key",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ValueResponse"
+          },
+          "400": {
+            "$ref": "#/responses/ErrorResponse400"
+          },
+          "default": {
+            "$ref": "#/responses/GenericErrorResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "KeyValueItem": {
+      "description": "Key Value Item",
+      "type": "object",
+      "properties": {
+        "Key": {
+          "description": "Key",
+          "type": "string"
+        },
+        "Ttl": {
+          "description": "Time to live duration",
+          "type": "integer",
+          "format": "int64"
+        },
+        "Value": {
+          "description": "Value",
+          "type": "string"
+        }
+      },
+      "x-go-package": "golang_in_memory_key_value/models"
+    }
+  },
+  "responses": {
+    "EmptyResponse": {
+      "description": "EmptyResponse Boş body",
+      "headers": {
+        "EmptyBody": {
+          "type": "string",
+          "description": "Hata Mesaji"
+        }
+      }
+    },
+    "ErrorResponse400": {
+      "description": "ErrorResponse400 Hatalı istek",
+      "headers": {
+        "Message": {
+          "type": "string",
+          "description": "Hata Mesaji"
+        }
+      }
+    },
+    "GenericErrorResponse": {
+      "description": "GenericErrorResponse Diğer hatalar",
+      "headers": {
+        "Code": {
+          "type": "string",
+          "description": "Hata Kodu"
+        },
+        "Message": {
+          "type": "string",
+          "description": "Hata Mesaji"
+        }
+      }
+    },
+    "KeyValueItemResponse": {
+      "description": "KeyValueItemResponse Kaydedilen Key Value Item",
+      "schema": {
+        "$ref": "#/definitions/KeyValueItem"
+      }
+    },
+    "ValueResponse": {
+      "description": "ValueResponse Key'e ait değer",
+      "headers": {
+        "Value": {
+          "type": "string",
+          "description": "Value"
+        }
+      }
+    }
+  }
+}
