@@ -2,6 +2,7 @@ package cache
 
 import (
 	"encoding/json"
+	"fmt"
 	"golang_in_memory_key_value/constants"
 	"golang_in_memory_key_value/models"
 	"io/ioutil"
@@ -59,10 +60,12 @@ func (c *Cache) GetBackup() {
 }
 
 func (c *Cache) ReadBackup() {
+	oldData := map[string]models.Item{}
 	dat, _ := ioutil.ReadFile("/tmp/TIMESTAMP-data.json")
-	var oldData map[string]models.Item
-	json.Unmarshal(dat, &oldData)
-
+	if len(fmt.Sprintf("%s", dat)) > 0 {
+		fmt.Printf("File contents: %s", dat)
+		json.Unmarshal(dat, &oldData)
+	}
 	c.Items = oldData
 }
 
