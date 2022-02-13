@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  key-value:
+    build: .
+    restart: always
+    volumes:
+      - backup:/tmp
+    environment:
+      tempEnvironment: someTempEnvironment
+    networks:
+      - kvnet
+    ports:
+      - "8080:8080"
+    secrets:
+      - user_pass
+
+volumes:
+  backup:
+
+networks:
+  kvnet:
+    driver: bridge
+
+secrets:
+  user_pass:
+    file: usrpass.txt
